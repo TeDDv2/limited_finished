@@ -1,0 +1,75 @@
+<!-- products.component.html -->
+<div class="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 pb-12">
+  <!-- Header -->
+  <app-product-header 
+    [isConnected]="isConnected" 
+    [isTableView]="isTableView"
+    (viewToggle)="onToggleView($event)"
+    (refresh)="refreshData()">
+  </app-product-header>
+
+  <!-- Main Content -->
+  <div class="container mx-auto px-6 py-8">
+    <!-- Statistics -->
+    <app-product-stats [products]="productData.products"></app-product-stats>
+
+    <!-- Search and Filters -->
+    <app-product-filters
+      [searchText]="searchText"
+      [selectedSize]="selectedSize"
+      (filtersChanged)="onFiltersChanged($event)">
+    </app-product-filters>
+
+    <!-- Products Grid View -->
+    <div *ngIf="!isTableView" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <ng-container *ngFor="let product of paginatedProducts">
+        <app-product-card 
+          [product]="product"
+          (viewDetails)="showProductDetail($event)">
+        </app-product-card>
+      </ng-container>
+
+      <!-- Empty State -->
+      <div *ngIf="filteredProducts.length === 0" class="col-span-full">
+        <app-empty-state 
+          (action)="refreshData()">
+        </app-empty-state>
+      </div>
+    </div>
+
+    <!-- Products Table View -->
+    <div *ngIf="isTableView">      
+      <!-- Table component -->
+      <app-products-table 
+        [products]="paginatedProducts"
+        (viewDetails)="showProductDetail($event)">
+      </app-products-table>
+
+      <!-- Empty State -->
+      <div *ngIf="filteredProducts.length === 0">
+        <app-empty-state 
+          (action)="refreshData()">
+        </app-empty-state>
+      </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <app-product-detail-modal
+      [product]="selectedProduct"
+      [isVisible]="showDetailModal"
+      (closeModal)="closeProductDetail()">
+    </app-product-detail-modal>
+
+    <!-- Pagination -->
+    <div class="mt-8 flex justify-center" *ngIf="filteredProducts.length > 0">
+      <app-product-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        [totalItems]="filteredProducts.length"
+        [itemsPerPage]="itemsPerPage"
+        (pageChange)="onPageChange($event)"
+        (itemsPerPageChange)="onItemsPerPageChange($event)">
+      </app-product-pagination>
+    </div>
+  </div>
+</div>

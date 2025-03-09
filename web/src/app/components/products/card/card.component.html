@@ -1,0 +1,60 @@
+<div
+    class="group bg-gray-800 rounded-lg overflow-hidden shadow-lg border border-gray-700 hover:border-blue-500 transition-all hover:shadow-xl hover:shadow-blue-900/20 h-full flex flex-col">
+    <!-- Produktový obrázek -->
+    <div class="aspect-w-16 aspect-h-12 bg-gray-900 relative">
+        <img [src]="'https://buzzsneakers.cz' + product.image" [alt]="product.name" class="object-cover w-full h-full">
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-70"></div>
+        <div class="absolute bottom-4 left-4">
+            <h3 class="text-white font-bold text-lg">{{ product.name }}</h3>
+            <p class="text-gray-300 text-sm">{{ product.sku }}</p>
+        </div>
+        <div class="absolute top-3 right-3 flex space-x-2">
+            <span *ngIf="getMaxStock() > 0" class="bg-blue-600 text-white px-2 py-1 text-xs font-medium rounded-full">
+                SKLADEM
+            </span>
+        </div>
+    </div>
+
+    <!-- Informace o produktu -->
+    <div class="p-4 flex-grow">
+        <div class="flex justify-between items-center mb-3">
+            <p class="text-blue-400 font-medium">EU</p>
+            <p class="text-white font-bold">{{ product.price }} Kč</p>
+        </div>
+
+        <!-- Velikosti - omezené zobrazení -->
+        <div *ngIf="getSizesForProduct().length > 0">
+            <div class="flex items-center justify-between mb-2">
+                <p class="text-gray-400 text-sm">Dostupné velikosti:</p>
+                <span *ngIf="getSizesForProduct().length > 6"
+                    class="text-blue-400 text-xs cursor-pointer hover:text-blue-300" (click)="onDetailClick()">
+                    Zobrazit vše ({{ getSizesForProduct().length }})
+                </span>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+                <ng-container *ngFor="let size of getVisibleSizes(); let i = index">
+                    <span class="px-2 py-1 text-xs rounded-md border" [ngClass]="{
+                'bg-green-900 bg-opacity-30 text-green-400 border-green-700': size.stock > 0,
+                'bg-gray-800 text-gray-400 border-gray-700': size.stock === 0
+              }">
+                        {{ size.name }}
+                        <span class="font-medium">{{ size.stock > 0 ? '('+size.stock+')' : '(0)' }}</span>
+                    </span>
+                </ng-container>
+            </div>
+        </div>
+        <div *ngIf="getSizesForProduct().length === 0">
+            <p class="text-gray-400 text-sm">Žádné velikosti k dispozici</p>
+        </div>
+    </div>
+
+    <!-- Akce -->
+    <div class="px-4 py-3 bg-gray-900 border-t border-gray-700 flex justify-between items-center mt-auto">
+        <p class="text-sm text-gray-400">BuzzSneakersCZ</p>
+        <button (click)="onDetailClick()"
+            class="bg-blue-600 hover:bg-blue-700 text-white text-sm py-1 px-3 rounded-md transition-colors">
+            Detail
+        </button>
+    </div>
+</div>

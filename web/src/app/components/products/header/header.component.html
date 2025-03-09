@@ -1,0 +1,47 @@
+<header class="bg-black bg-opacity-40 backdrop-filter backdrop-blur-lg border-b border-gray-700 sticky top-0 z-10">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+            <h1 class="text-2xl font-bold text-white tracking-tight">Databáze produktů</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-2">
+                <span class="text-sm text-gray-300">Status:</span>
+                <span [ngClass]="{
+              'bg-green-500': isConnected,
+              'bg-red-500': !isConnected
+            }" class="flex items-center px-3 py-1 rounded-full text-sm text-white font-medium">
+                    <span class="h-2 w-2 rounded-full mr-2" [ngClass]="{
+                'bg-white animate-pulse': isConnected,
+                'bg-gray-300': !isConnected
+              }"></span>
+                    {{ isConnected ? 'Online' : 'Offline' }}
+                </span>
+            </div>
+
+            <!-- Přepínání zobrazení -->
+            <button (click)="toggleView()"
+                class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-md text-sm flex items-center space-x-2">
+                <svg *ngIf="!isTableView" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+                <svg *ngIf="isTableView" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 4h16v4H4V4zm0 6h16v4H4v-4zm0 6h16v4H4v-4z" />
+                </svg>
+                <span>{{ isTableView ? 'Karty' : 'Tabulka' }}</span>
+            </button>
+
+            <button (click)="refreshData()"
+                class="bg-blue-600 hover:bg-blue-700 transition-colors text-white py-2 px-4 rounded-md text-sm font-medium">
+                Obnovit data
+            </button>
+        </div>
+    </div>
+</header>

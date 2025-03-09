@@ -1,0 +1,47 @@
+<div class="flex flex-col items-center space-y-4">
+    <div class="text-gray-300">
+        Zobrazuji {{ totalItems > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0 }} -
+        {{ Math.min(currentPage * itemsPerPage, totalItems) }}
+        z {{ totalItems }} produktů
+    </div>
+
+    <nav class="flex space-x-2">
+        <!-- Tlačítko Předchozí -->
+        <button (click)="prevPage()" [disabled]="currentPage === 1" class="px-4 py-2 rounded-md transition-colors"
+            [ngClass]="{
+        'bg-gray-700 hover:bg-gray-600 text-white': currentPage !== 1,
+        'bg-gray-800 text-gray-500 cursor-not-allowed': currentPage === 1
+      }">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+
+        <!-- Stránky -->
+        <ng-container *ngFor="let page of pageNumbers">
+            <button *ngIf="page !== '...'" (click)="goToPage(page)" class="px-4 py-2 rounded-md transition-colors"
+                [ngClass]="{
+          'bg-blue-600 text-white': page === currentPage,
+          'bg-gray-700 hover:bg-gray-600 text-white': page !== currentPage
+        }">
+                {{ page }}
+            </button>
+
+            <!-- Elipsa pro zkrácení -->
+            <span *ngIf="page === '...'" class="px-4 py-2 text-gray-400">...</span>
+        </ng-container>
+
+        <!-- Tlačítko Další -->
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages"
+            class="px-4 py-2 rounded-md transition-colors" [ngClass]="{
+        'bg-gray-700 hover:bg-gray-600 text-white': currentPage !== totalPages,
+        'bg-gray-800 text-gray-500 cursor-not-allowed': currentPage === totalPages
+      }">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+    </nav>
+</div>
